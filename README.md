@@ -637,23 +637,6 @@ Delete a dictionary word.
 Authorization: Bearer <jwt_token>
 ```
 
-## 🚢 Deployment
-
-### Deploy to Railway.app
-
-See [RAILWAY.md](./RAILWAY.md) for detailed step-by-step Railway deployment instructions.
-
-### Deploy to Vercel
-
-1. **Install Vercel CLI:**
-```bash
-npm i -g vercel
-```
-
-2. **Deploy:**
-```bash
-vercel
-```
 
 3. **Add Environment Variables:**
    - Go to Vercel project settings
@@ -668,24 +651,6 @@ vercel
    - Update `DATABASE_URL` in Vercel environment variables
    - Run database schema in Neon SQL Editor
 
-## 🧪 Testing
-
-### Manual Testing Checklist
-
-- [ ] Sign up with new account
-- [ ] Login with existing account
-- [ ] Start recording and speak for 10+ seconds
-- [ ] Verify transcription appears incrementally (every 8 seconds)
-- [ ] Stop recording and verify final text is saved
-- [ ] Check History tab shows new transcription
-- [ ] Click copy button to copy transcription
-- [ ] Delete transcription from history
-- [ ] Add word to dictionary
-- [ ] Record again with dictionary word
-- [ ] Verify improved transcription accuracy
-- [ ] Delete word from dictionary
-- [ ] Toggle dark/light mode in Settings
-- [ ] Logout and verify redirect to login
 
 ### How to Check Dictionary is Working
 
@@ -782,17 +747,6 @@ Features:
 - Audio feedback when recording
 - Click sounds for better UX
 
-## ✅ Assignment Completion Status
-
-### Overall: **100% COMPLETE** ✅
-
-| Category | Status | Percentage |
-|----------|--------|------------|
-| Functionality | ✅ Complete | 100% |
-| UI Design | ✅ Complete | 100% |
-| User Experience | ✅ Complete | 100% |
-| Performance | ✅ Complete | 100% |
-| Code Quality | ✅ Complete | 100% |
 
 ### All Requirements Met ✅
 
