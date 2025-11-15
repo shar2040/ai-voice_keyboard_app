@@ -134,26 +134,36 @@ export function TranscriptionHistory() {
               className="border-0 shadow-md p-6 bg-card hover:shadow-lg transition-shadow group relative"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
+                <div 
+                  className="flex-1 min-w-0 cursor-pointer relative"
+                  onClick={() => copyToClipboard(transcription.text)}
+                  title="Click to copy"
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">{formatDate(transcription.createdAt)}</p>
                   </div>
-                  <p className="text-foreground break-words line-clamp-3 group-hover:line-clamp-none transition-all cursor-pointer">
+                  <p className="text-foreground break-words line-clamp-3 group-hover:line-clamp-none transition-all">
                     {transcription.text}
                   </p>
+                  {/* Copy button appears on hover */}
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="text-xs gap-1 shadow-md"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        copyToClipboard(transcription.text)
+                      }}
+                    >
+                      <Copy className="w-3 h-3" />
+                      Copy
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="flex gap-2 flex-shrink-0">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => copyToClipboard(transcription.text)}
-                    className="text-muted-foreground hover:text-primary"
-                    title="Copy to clipboard"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
                   <Button
                     size="sm"
                     variant="ghost"

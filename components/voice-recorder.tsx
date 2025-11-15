@@ -23,7 +23,7 @@ export function VoiceRecorder() {
   const audioChunksRef = useRef<Blob[]>([])
   const chunkAccumulatorRef = useRef<Blob[]>([])
   const lastProcessTimeRef = useRef<number>(Date.now())
-  const audioMonitorRef = useRef<HTMLAudioElement | null>(null)
+  const audioMonitorRef = useRef<{ source: MediaStreamAudioSourceNode; gainNode: GainNode } | null>(null)
 
   const startRecording = async () => {
     try {
@@ -38,16 +38,15 @@ export function VoiceRecorder() {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
       
       // Enable audio monitoring (user hears their own voice when recording)
+      // Connect microphone input directly to speakers for real-time monitoring
       const source = audioContextRef.current.createMediaStreamSource(stream)
-      const destination = audioContextRef.current.createMediaStreamDestination()
-      source.connect(destination)
+      const gainNode = audioContextRef.current.createGain()
+      gainNode.gain.value = 0.5 // Set volume to 50% to avoid feedback
+      source.connect(gainNode)
+      gainNode.connect(audioContextRef.current.destination) // Connect to speakers
       
-      // Create audio element for monitoring and store reference
-      const audioElement = new Audio()
-      audioElement.srcObject = destination.stream
-      audioElement.volume = 0.5 // Set volume to 50% to avoid feedback
-      audioMonitorRef.current = audioElement
-      audioElement.play().catch(() => {}) // Start monitoring - user hears their voice
+      // Store reference for cleanup
+      audioMonitorRef.current = { source, gainNode } as any
 
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'audio/webm;codecs=opus',
@@ -153,8 +152,8 @@ export function VoiceRecorder() {
       }
       // Stop audio monitoring
       if (audioMonitorRef.current) {
-        audioMonitorRef.current.pause()
-        audioMonitorRef.current.srcObject = null
+        audioMonitorRef.current.source.disconnect()
+        audioMonitorRef.current.gainNode.disconnect()
         audioMonitorRef.current = null
       }
       setIsRecording(false)

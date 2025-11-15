@@ -730,7 +730,6 @@ Authorization: Bearer <jwt_token>
 - **Separation of Concerns**: Database logic, auth, and UI separated
 - **Reusable Components**: Modular React components
 - **Clean Code**: Minimal, maintainable codebase
-- **No [v0] References**: All removed, production-ready
 
 ## 🎨 UI/UX Design
 
@@ -747,6 +746,31 @@ Features:
 - Audio feedback when recording
 - Click sounds for better UX
 
+## 📝 Recent Changes & Fixes
+
+### Audio Feedback - FIXED ✅
+- **Issue**: Audio monitoring (hearing your own voice) was not working
+- **Fix**: Changed from `createMediaStreamDestination()` to direct AudioContext connection
+- **File**: `components/voice-recorder.tsx` (lines 40-49)
+- **Result**: Users now hear their voice in real-time when recording (50% volume)
+
+### Hover-to-Copy Enhancement ✅
+- **Issue**: Assignment requires "hover on text, one-click to copy"
+- **Fix**: Added hover effect - copy button appears on hover, entire text area clickable
+- **File**: `components/transcription-history.tsx` (lines 137-163)
+- **Result**: Better UX matching assignment requirements
+
+### TypeScript Build Error - FIXED ✅
+- **Issue**: Build failing with `cn()` function type error
+- **Fix**: Updated `cn()` to use `clsx` and `tailwind-merge` for conditional classes
+- **File**: `lib/utils.ts` (lines 1-6)
+- **Result**: Build now succeeds, supports conditional class objects
+
+### API Key Validation - ADDED ✅
+- **Issue**: No validation if GROQ_API_KEY is missing
+- **Fix**: Added check before using API key
+- **File**: `app/api/transcribe/route.ts` (lines 67-73)
+- **Result**: Better error handling, prevents runtime crashes
 
 ### All Requirements Met ✅
 
