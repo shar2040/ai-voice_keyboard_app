@@ -5,6 +5,10 @@ import { verifyJWT, extractTokenFromHeader } from '@/lib/auth'
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/audio/transcriptions'
 const GROQ_API_KEY = process.env.GROQ_API_KEY
 
+if (!GROQ_API_KEY && process.env.NODE_ENV === 'production') {
+  console.warn('GROQ_API_KEY is not set. Transcription features will not work.')
+}
+
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get('Authorization')
@@ -59,6 +63,14 @@ export async function POST(request: NextRequest) {
     }
 
     const dictionary = await getDictionary(payload.userId)
+
+    // Check if GROQ_API_KEY is available
+    if (!GROQ_API_KEY) {
+      return NextResponse.json(
+        { error: 'Transcription service is not configured. Please contact support.' },
+        { status: 503 }
+      )
+    }
 
     // Groq API needs the file directly - don't convert unnecessarily
     // Just ensure we have a proper File object with correct name
